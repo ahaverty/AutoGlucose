@@ -23,6 +23,8 @@ import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
 
 /**
+ * Setup REST connection and methods for making service calls
+ * 
  * @author Alan Haverty
  *
  */
@@ -31,13 +33,16 @@ public class RestSender {
 	Logger logger = Logger.getLogger("RestLogger");
 	AppProperties prop = new AppProperties();
 
-	private Client client;
-	private String baseUri;
-
+	final private String baseUri = prop.getBaseUri();
 	final private String logEntriesUri = prop.getLogEntriesUri();
 
-	public RestSender(String baseUri) {
-		this.baseUri = baseUri;
+	private Client client;
+
+	/**
+	 * Initialise the Rest Sender instance by setting up the client connection
+	 * and authentication filters
+	 */
+	public RestSender() {
 		setup();
 	}
 
@@ -47,6 +52,7 @@ public class RestSender {
 		client.addFilter(new HTTPBasicAuthFilter(prop.getUsername(), prop.getPassword()));
 	}
 
+	@SuppressWarnings("unused")
 	private void loggerToFileSetup() {
 		FileHandler fh;
 
@@ -69,14 +75,14 @@ public class RestSender {
 	 *            The UUID to associate with the measurement
 	 * @param payload
 	 *            The JSON object with the measurement data payload
-	 * @return The return code
+	 * @return The return code returned by the server
 	 */
 	public int sendReading(String id, JSONObject payload) {
 		ObjectMapper mapper = new ObjectMapper();
 
 		String apiUri = baseUri + logEntriesUri + id;
-		
-		logger.info("API URI: " +apiUri);
+
+		logger.info("API URI: " + apiUri);
 
 		WebResource webResource = client.resource(apiUri);
 		ClientResponse response = null;
@@ -85,9 +91,9 @@ public class RestSender {
 			response = webResource.accept(MediaType.APPLICATION_JSON_TYPE).type(MediaType.APPLICATION_JSON_TYPE).put(ClientResponse.class, mapper.writeValueAsString(payload));
 		} catch (UniformInterfaceException | ClientHandlerException
 				| IOException e) {
-			
+
 			logger.log(Level.SEVERE, "Failed after accept");
-			
+
 			e.printStackTrace();
 		}
 
@@ -97,7 +103,7 @@ public class RestSender {
 		} else {
 			logger.log(Level.SEVERE, "Failed : HTTP error code : "
 					+ response.getStatus());
-			
+
 			throw new RuntimeException("Failed : HTTP error code : "
 					+ response.getStatus());
 		}
