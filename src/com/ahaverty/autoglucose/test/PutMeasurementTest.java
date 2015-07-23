@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 import org.json.simple.JSONObject;
 
 import com.ahaverty.autoglucose.rest.RequestCreator;
+import com.ahaverty.autoglucose.rest.RestService;
 
 /**
  * @author Alan Haverty
@@ -29,8 +30,12 @@ public class PutMeasurementTest {
 		String location = "15 Seabury Lawns";
 		double glucoseMeasurement = 13.97;
 		int points = 2;
+		
+		
+		RestService restService = new RestService();
+		System.out.println(restService.getMeasurements());
 
-		RequestCreator requestCreator = new RequestCreator();
+//		RequestCreator requestCreator = new RequestCreator();
 
 //		JSONObject putMeasurementPayload = requestCreator.measurementReading(id, currentDateTime, utcOffset, location, convertMmolToMgdl(glucoseMeasurement), points);
 //		System.out.println(putMeasurementPayload);
