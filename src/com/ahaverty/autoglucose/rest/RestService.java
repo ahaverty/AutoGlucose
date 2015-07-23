@@ -4,6 +4,7 @@
 package com.ahaverty.autoglucose.rest;
 
 import java.io.IOException;
+import java.util.UUID;
 import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,6 +16,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.json.simple.JSONObject;
 
 import com.ahaverty.autoglucose.config.AppProperties;
+import com.ahaverty.autoglucose.data.Measurement;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
@@ -28,7 +30,7 @@ import com.sun.jersey.api.client.filter.HTTPBasicAuthFilter;
  * @author Alan Haverty
  *
  */
-public class RestSender {
+public class RestService {
 
 	Logger logger = Logger.getLogger("RestLogger");
 	AppProperties prop = new AppProperties();
@@ -42,7 +44,7 @@ public class RestSender {
 	 * Initialise the Rest Sender instance by setting up the client connection
 	 * and authentication filters
 	 */
-	public RestSender() {
+	public RestService() {
 		setup();
 	}
 
@@ -77,41 +79,37 @@ public class RestSender {
 	 *            The JSON object with the measurement data payload
 	 * @return The return code returned by the server
 	 */
-	public int sendReading(String id, JSONObject payload) {
+	private boolean sendReading(String id, JSONObject payload) {
+
+		boolean postSuccess = false;
 		ObjectMapper mapper = new ObjectMapper();
+		String apiPut = baseUri + logEntriesUri + id;
 
-		String apiUri = baseUri + logEntriesUri + id;
+		logger.info("API URI: " + apiPut);
 
-		logger.info("API URI: " + apiUri);
-
-		WebResource webResource = client.resource(apiUri);
+		WebResource webResource = client.resource(apiPut);
 		ClientResponse response = null;
 
 		try {
 			response = webResource.accept(MediaType.APPLICATION_JSON_TYPE).type(MediaType.APPLICATION_JSON_TYPE).put(ClientResponse.class, mapper.writeValueAsString(payload));
 		} catch (UniformInterfaceException | ClientHandlerException
 				| IOException e) {
-
 			logger.log(Level.SEVERE, "Failed after accept");
-
-			e.printStackTrace();
 		}
 
-		// check response status code
 		if (response.getStatus() == 200) {
-			System.out.println("POST success!");
-		} else {
-			logger.log(Level.SEVERE, "Failed : HTTP error code : "
-					+ response.getStatus());
-
-			throw new RuntimeException("Failed : HTTP error code : "
-					+ response.getStatus());
+			postSuccess = true;
 		}
 
-		logger.info(response.getEntity(String.class));
+		return postSuccess;
 
-		return response.getStatus();
+	}
 
+	public boolean postMeasurement(Measurement measurement, long utcOffset, String location, int points) {
+		// TODO configure utcOffset and points from properties file!
+		String id = UUID.randomUUID().toString();
+		JSONObject putMeasurementPayload = new RequestCreator().measurementReading(id, measurement.getDateTime(), utcOffset, location, measurement.getReadingMgdl(), points);
+		return sendReading(id, putMeasurementPayload);
 	}
 
 }

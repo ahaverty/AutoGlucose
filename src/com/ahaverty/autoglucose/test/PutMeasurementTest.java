@@ -9,7 +9,6 @@ import org.joda.time.DateTime;
 import org.json.simple.JSONObject;
 
 import com.ahaverty.autoglucose.rest.RequestCreator;
-import com.ahaverty.autoglucose.rest.RestSender;
 
 /**
  * @author Alan Haverty
@@ -25,7 +24,6 @@ public class PutMeasurementTest {
 	public static void main(String[] args) {
 
 		// Test Data
-		String id = UUID.randomUUID().toString();
 		DateTime currentDateTime = new DateTime();
 		long utcOffset = 3600;
 		String location = "15 Seabury Lawns";
@@ -34,13 +32,13 @@ public class PutMeasurementTest {
 
 		RequestCreator requestCreator = new RequestCreator();
 
-		JSONObject putMeasurementPayload = requestCreator.measurementReading(id, currentDateTime, utcOffset, location, convertMmolToMgdl(glucoseMeasurement), points);
-		System.out.println(putMeasurementPayload);
+//		JSONObject putMeasurementPayload = requestCreator.measurementReading(id, currentDateTime, utcOffset, location, convertMmolToMgdl(glucoseMeasurement), points);
+//		System.out.println(putMeasurementPayload);
 
-		RestSender sender = new RestSender();
-		int returnCode = sender.sendReading(id, putMeasurementPayload);
+//		RestSender sender = new RestSender();
+//		int returnCode = sender.sendReading(id, putMeasurementPayload);
 
-		System.out.println("Return Code: " + returnCode);
+//		System.out.println("Return Code: " + returnCode);
 	}
 
 	/**
