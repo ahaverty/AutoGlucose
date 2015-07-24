@@ -3,6 +3,11 @@
  */
 package com.ahaverty.autoglucose.test;
 
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.InputStream;
+
+import com.ahaverty.autoglucose.file.CsvUtility;
 import com.ahaverty.autoglucose.rest.RestService;
 import com.ahaverty.autoglucose.rest.pojo.Log;
 import com.ahaverty.autoglucose.rest.pojo.LogEntry;
@@ -35,6 +40,17 @@ public class PutMeasurementTest {
 		for(LogEntry logEntry : log.getLogEntry()) {
 			System.out.println(logEntry.getBloodGlucoseMeasurement());
 		}
+
+		FileReader fileReader = null;
+		try {
+			//Convert to prop file setting;
+			//TODO fix file input and setup in properties file
+			fileReader = new FileReader("/test_csv_data/DiaryU100834463.csv");
+		} catch (FileNotFoundException e) {
+			System.err.println("Unable to find csv file");
+		}
+		
+		CsvUtility.extractMeasurementsFromCsvData(CsvUtility.readCsvFile(fileReader));
 
 //		RequestCreator requestCreator = new RequestCreator();
 
