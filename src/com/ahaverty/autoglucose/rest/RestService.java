@@ -8,7 +8,7 @@ import java.util.UUID;
 import org.json.simple.JSONObject;
 
 import com.ahaverty.autoglucose.data.Measurement;
-import com.ahaverty.autoglucose.rest.pojo.LogEntry;
+import com.ahaverty.autoglucose.rest.pojo.Log;
 
 /**
  * @author Alan Haverty
@@ -30,8 +30,8 @@ public class RestService {
 		return restUtility.putMeasurement(id, putMeasurementPayload);
 	}
 
-	public LogEntry getMeasurements() {
-		return restUtility.getMeasurements();
+	public Log getMeasurements() {
+		return restUtility.getLogEntry();
 	}
 
 }

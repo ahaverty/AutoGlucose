@@ -4,6 +4,7 @@
 package com.ahaverty.autoglucose.test;
 
 import com.ahaverty.autoglucose.rest.RestService;
+import com.ahaverty.autoglucose.rest.pojo.Log;
 import com.ahaverty.autoglucose.rest.pojo.LogEntry;
 
 /**
@@ -28,8 +29,12 @@ public class PutMeasurementTest {
 		
 		
 		RestService restService = new RestService();
-		LogEntry logEntry = restService.getMeasurements();
-		System.out.println(logEntry);
+		Log log = restService.getMeasurements();
+		System.out.println(log);
+		
+		for(LogEntry logEntry : log.getLogEntry()) {
+			System.out.println(logEntry.getBloodGlucoseMeasurement());
+		}
 
 //		RequestCreator requestCreator = new RequestCreator();
 

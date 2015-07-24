@@ -13,7 +13,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.json.simple.JSONObject;
 
 import com.ahaverty.autoglucose.config.AppProperties;
-import com.ahaverty.autoglucose.rest.pojo.LogEntry;
+import com.ahaverty.autoglucose.rest.pojo.Log;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;
@@ -30,8 +30,8 @@ import com.sun.jersey.api.json.JSONConfiguration;
  */
 public class RestUtility {
 
-	Logger logger = Logger.getLogger("RestLogger");
-	AppProperties prop = new AppProperties();
+	private Logger logger = Logger.getLogger("RestLogger");
+	private AppProperties prop = new AppProperties();
 	
 	final private String baseUri = prop.getBaseUri();
 	final private String logEntriesUri = prop.getLogEntriesUri();
@@ -76,7 +76,7 @@ public class RestUtility {
 	 *            The JSON object with the measurement data payload
 	 * @return The return code returned by the server
 	 */
-	boolean putMeasurement(String id, JSONObject payload) {
+	public boolean putMeasurement(String id, JSONObject payload) {
 		String apiPut = baseUri + logEntriesUri + id;
 
 		logger.info("API URI: " + apiPut);
@@ -95,9 +95,9 @@ public class RestUtility {
 	}
 	
 	
-	private LogEntry getMeasurementsAsJson() {
+	public Log getLogEntry() {
 		
-		LogEntry logEntry = new LogEntry();
+		Log log = new Log();
 		
 		String apiGet = baseUri + logEntriesUri + getMeasurementsUri;
 		
@@ -111,17 +111,13 @@ public class RestUtility {
 		}
 
 		if(isResponseSuccess(response)) {
-			logEntry = response.getEntity(LogEntry.class);
+			log = response.getEntity(Log.class);
 		} else {
-			logger.log(Level.SEVERE, "Failed to parse MeasurementEntry response");
+			logger.log(Level.SEVERE, "Failed to parse Log response");
 		}
 		
-		return logEntry;
+		return log;
 		
-	}
-	
-	public LogEntry getMeasurements() {
-		return getMeasurementsAsJson();
 	}
 	
 }

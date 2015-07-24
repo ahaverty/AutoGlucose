@@ -21,7 +21,7 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 @JsonPropertyOrder({
     "logEntry"
 })
-public class Measurement {
+public class Log {
 
     @JsonProperty("logEntry")
     private List<LogEntry> logEntry = new ArrayList<LogEntry>();
@@ -73,10 +73,10 @@ public class Measurement {
         if (other == this) {
             return true;
         }
-        if ((other instanceof Measurement) == false) {
+        if ((other instanceof Log) == false) {
             return false;
         }
-        Measurement rhs = ((Measurement) other);
+        Log rhs = ((Log) other);
         return new EqualsBuilder().append(logEntry, rhs.logEntry).append(additionalProperties, rhs.additionalProperties).isEquals();
     }
 
