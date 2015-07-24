@@ -3,13 +3,7 @@
  */
 package com.ahaverty.autoglucose.test;
 
-import java.util.UUID;
-
-import org.joda.time.DateTime;
-import org.json.simple.JSONObject;
-
 import com.ahaverty.autoglucose.rest.LogEntry;
-import com.ahaverty.autoglucose.rest.RequestCreator;
 import com.ahaverty.autoglucose.rest.RestService;
 
 /**
@@ -26,11 +20,11 @@ public class PutMeasurementTest {
 	public static void main(String[] args) {
 
 		// Test Data
-		DateTime currentDateTime = new DateTime();
-		long utcOffset = 3600;
-		String location = "15 Seabury Lawns";
-		double glucoseMeasurement = 13.97;
-		int points = 2;
+//		DateTime currentDateTime = new DateTime();
+//		long utcOffset = 3600;
+//		String location = "15 Seabury Lawns";
+//		double glucoseMeasurement = 13.97;
+//		int points = 2;
 		
 		
 		RestService restService = new RestService();
@@ -46,16 +40,6 @@ public class PutMeasurementTest {
 //		int returnCode = sender.sendReading(id, putMeasurementPayload);
 
 //		System.out.println("Return Code: " + returnCode);
-	}
-
-	/**
-	 * Converts MMOL reading to MGDL glucose reading
-	 * 
-	 * @param mmolMeasurement
-	 * @return
-	 */
-	private static double convertMmolToMgdl(double mmolMeasurement) {
-		return mmolMeasurement * 18;
 	}
 
 }
