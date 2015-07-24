@@ -3,7 +3,6 @@
  */
 package com.ahaverty.autoglucose.rest;
 
-import java.util.List;
 import java.util.UUID;
 
 import org.json.simple.JSONObject;
@@ -30,7 +29,7 @@ public class RestService {
 		return restUtility.putMeasurement(id, putMeasurementPayload);
 	}
 
-	public List<MeasurementEntry> getMeasurements() {
+	public LogEntry getMeasurements() {
 		return restUtility.getMeasurements();
 	}
 

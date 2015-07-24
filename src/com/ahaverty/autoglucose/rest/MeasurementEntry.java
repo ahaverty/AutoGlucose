@@ -5,10 +5,13 @@ package com.ahaverty.autoglucose.rest;
 
 import java.util.List;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
 /**
  * @author Alan Haverty
  *
  */
+@JsonIgnoreProperties({ "mealImages", "nutritionalConstituents"})
 public class MeasurementEntry {
 	
 	private String id;
@@ -21,7 +24,14 @@ public class MeasurementEntry {
 	private int points;
 	private double bloodGlucoseMeasurement;
 	private int penBasalInjectionUnits;
+	private int penBolusInjectionUnits;
 	private int bolusFoodInsulinUnits;
+	private int bolusCorrectionInsulinUnits;
+	private int mealCarbohydrates;
+	private String mealDescriptionText;
+	private String note;
+	private double bodyWeight;
+	private List<Verifications> verifications;
 	private double locationLatitude;
 	private double locationLongitude;
 	private String locationText;
@@ -116,6 +126,48 @@ public class MeasurementEntry {
 	}
 	public void setLocationType(String locationType) {
 		this.locationType = locationType;
+	}
+	public int getBolusCorrectionInsulinUnits() {
+		return bolusCorrectionInsulinUnits;
+	}
+	public void setBolusCorrectionInsulinUnits(int bolusCorrectionInsulinUnits) {
+		this.bolusCorrectionInsulinUnits = bolusCorrectionInsulinUnits;
+	}
+	public int getMealCarbohydrates() {
+		return mealCarbohydrates;
+	}
+	public void setMealCarbohydrates(int mealCarbohydrates) {
+		this.mealCarbohydrates = mealCarbohydrates;
+	}
+	public List<Verifications> getVerifications() {
+		return verifications;
+	}
+	public void setVerifications(List<Verifications> verifications) {
+		this.verifications = verifications;
+	}
+	public double getBodyWeight() {
+		return bodyWeight;
+	}
+	public void setBodyWeight(double bodyWeight) {
+		this.bodyWeight = bodyWeight;
+	}
+	public String getMealDescriptionText() {
+		return mealDescriptionText;
+	}
+	public void setMealDescriptionText(String mealDescriptionText) {
+		this.mealDescriptionText = mealDescriptionText;
+	}
+	public int getPenBolusInjectionUnits() {
+		return penBolusInjectionUnits;
+	}
+	public void setPenBolusInjectionUnits(int penBolusInjectionUnits) {
+		this.penBolusInjectionUnits = penBolusInjectionUnits;
+	}
+	public String getNote() {
+		return note;
+	}
+	public void setNote(String note) {
+		this.note = note;
 	}
 	
 	

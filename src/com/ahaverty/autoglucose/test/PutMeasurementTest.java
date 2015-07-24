@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.joda.time.DateTime;
 import org.json.simple.JSONObject;
 
+import com.ahaverty.autoglucose.rest.LogEntry;
 import com.ahaverty.autoglucose.rest.RequestCreator;
 import com.ahaverty.autoglucose.rest.RestService;
 
@@ -33,7 +34,8 @@ public class PutMeasurementTest {
 		
 		
 		RestService restService = new RestService();
-		System.out.println(restService.getMeasurements());
+		LogEntry logEntry = restService.getMeasurements();
+		System.out.println(logEntry);
 
 //		RequestCreator requestCreator = new RequestCreator();
 

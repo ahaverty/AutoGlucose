@@ -4,8 +4,6 @@
 package com.ahaverty.autoglucose.rest;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -96,9 +94,9 @@ public class RestUtility {
 	}
 	
 	
-	private MeasurementEntry getMeasurementsAsJson() {
+	private LogEntry getMeasurementsAsJson() {
 		
-		MeasurementEntry measurementEntry = new MeasurementEntry();
+		LogEntry logEntry = new LogEntry();
 		
 		String apiGet = baseUri + logEntriesUri + getMeasurementsUri;
 		
@@ -112,21 +110,17 @@ public class RestUtility {
 		}
 
 		if(isResponseSuccess(response)) {
-			measurementEntry = response.getEntity(MeasurementEntry.class);
+			logEntry = response.getEntity(LogEntry.class);
 		} else {
 			logger.log(Level.SEVERE, "Failed to parse MeasurementEntry response");
 		}
 		
-		return measurementEntry;
+		return logEntry;
 		
 	}
 	
-	public List<MeasurementEntry> getMeasurements() {
-		//TODO convert json response to list of measurements
-		List<MeasurementEntry> measurementEntries = new ArrayList<MeasurementEntry>();
-		measurementEntries.add(getMeasurementsAsJson());
-		
-		return measurementEntries;
+	public LogEntry getMeasurements() {
+		return getMeasurementsAsJson();
 	}
 	
 }
