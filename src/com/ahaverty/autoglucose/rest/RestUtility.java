@@ -13,6 +13,7 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.json.simple.JSONObject;
 
 import com.ahaverty.autoglucose.config.AppProperties;
+import com.ahaverty.autoglucose.rest.pojo.LogEntry;
 import com.sun.jersey.api.client.Client;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientResponse;

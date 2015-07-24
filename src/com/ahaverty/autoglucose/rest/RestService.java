@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.json.simple.JSONObject;
 
 import com.ahaverty.autoglucose.data.Measurement;
+import com.ahaverty.autoglucose.rest.pojo.LogEntry;
 
 /**
  * @author Alan Haverty

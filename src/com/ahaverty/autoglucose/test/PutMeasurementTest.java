@@ -3,8 +3,8 @@
  */
 package com.ahaverty.autoglucose.test;
 
-import com.ahaverty.autoglucose.rest.LogEntry;
 import com.ahaverty.autoglucose.rest.RestService;
+import com.ahaverty.autoglucose.rest.pojo.LogEntry;
 
 /**
  * @author Alan Haverty
