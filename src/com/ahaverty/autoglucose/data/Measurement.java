@@ -93,6 +93,14 @@ public class Measurement {
 	public void setReadingMmol(double readingMmol) {
 		this.readingMgdl = readingMmol*unitDifference;
 	}
+	@Override
+	public String toString() {
+		return "Measurement [dateTime=" + dateTime + ", readingMgdl="
+				+ readingMgdl + ", unit=" + unit + ", temperatureWarning="
+				+ temperatureWarning + ", outOfTargetRange=" + outOfTargetRange
+				+ ", other=" + other + ", readingCategory=" + readingCategory
+				+ "]";
+	}
 	
 	
 

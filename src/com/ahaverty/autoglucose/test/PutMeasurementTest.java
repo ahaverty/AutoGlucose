@@ -5,12 +5,13 @@ package com.ahaverty.autoglucose.test;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.InputStream;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import com.ahaverty.autoglucose.data.Measurement;
 import com.ahaverty.autoglucose.file.CsvUtility;
-import com.ahaverty.autoglucose.rest.RestService;
-import com.ahaverty.autoglucose.rest.pojo.Log;
-import com.ahaverty.autoglucose.rest.pojo.LogEntry;
+
 
 /**
  * @author Alan Haverty
@@ -18,12 +19,15 @@ import com.ahaverty.autoglucose.rest.pojo.LogEntry;
  */
 public class PutMeasurementTest {
 
+	private static Logger logger = Logger.getLogger("PutMeasurementTestLogger");
+
 	/**
 	 * Creates a measurement using PUT
 	 * 
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
 
 		// Test Data
 //		DateTime currentDateTime = new DateTime();
@@ -33,24 +37,30 @@ public class PutMeasurementTest {
 //		int points = 2;
 		
 		
-		RestService restService = new RestService();
-		Log log = restService.getMeasurements();
-		System.out.println(log);
-		
-		for(LogEntry logEntry : log.getLogEntry()) {
-			System.out.println(logEntry.getBloodGlucoseMeasurement());
-		}
+//		RestService restService = new RestService();
+//		Log log = restService.getMeasurements();
+//		logger.log(Level.INFO, log.toString());
+//		
+//		for(LogEntry logEntry : log.getLogEntry()) {
+//			logger.log(Level.INFO, logEntry.getBloodGlucoseMeasurement().toString());
+//		}
 
 		FileReader fileReader = null;
 		try {
 			//Convert to prop file setting;
 			//TODO fix file input and setup in properties file
-			fileReader = new FileReader("/test_csv_data/DiaryU100834463.csv");
+			String filePath = PutMeasurementTest.class.getClassLoader().getResource("test_csv_data/DiaryU100834463.csv").getPath();
+			logger.info("filePath: " + filePath);
+			fileReader = new FileReader(filePath);
 		} catch (FileNotFoundException e) {
-			System.err.println("Unable to find csv file");
+			logger.log(Level.SEVERE, "Unable to find csv file");
 		}
 		
-		CsvUtility.extractMeasurementsFromCsvData(CsvUtility.readCsvFile(fileReader));
+		List<Measurement> measurements = CsvUtility.extractMeasurementsFromCsvData(CsvUtility.readCsvFile(fileReader));
+		
+		for (Measurement measurement : measurements) {
+			logger.info(measurement.toString());
+		}
 
 //		RequestCreator requestCreator = new RequestCreator();
 
