@@ -6,6 +6,7 @@ package com.ahaverty.autoglucose.data;
 import org.joda.time.DateTime;
 
 /**
+ * Measurement class for storing a measurement taken from the accu cheks csv file
  * @author Alan Haverty
  *
  */

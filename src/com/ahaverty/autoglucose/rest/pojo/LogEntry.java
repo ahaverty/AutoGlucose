@@ -60,15 +60,15 @@ public class LogEntry {
     @JsonProperty("tags")
     private List<Tag> tags = new ArrayList<Tag>();
     @JsonProperty("modifiedAt")
-    private Integer modifiedAt;
+    private Long modifiedAt;
     @JsonProperty("dateOfEntry")
-    private Integer dateOfEntry;
+    private Long dateOfEntry;
     @JsonProperty("dateOfEntryUtcOffset")
-    private Integer dateOfEntryUtcOffset;
+    private Long dateOfEntryUtcOffset;
     @JsonProperty("dateOfEntryUtcOffsetSeconds")
-    private Integer dateOfEntryUtcOffsetSeconds;
+    private Long dateOfEntryUtcOffsetSeconds;
     @JsonProperty("dateOfEntryLocal")
-    private Integer dateOfEntryLocal;
+    private Long dateOfEntryLocal;
     @JsonProperty("points")
     private Integer points;
     @JsonProperty("bloodGlucoseMeasurement")
@@ -166,7 +166,7 @@ public class LogEntry {
      *     The modifiedAt
      */
     @JsonProperty("modifiedAt")
-    public Integer getModifiedAt() {
+    public Long getModifiedAt() {
         return modifiedAt;
     }
 
@@ -176,7 +176,7 @@ public class LogEntry {
      *     The modifiedAt
      */
     @JsonProperty("modifiedAt")
-    public void setModifiedAt(Integer modifiedAt) {
+    public void setModifiedAt(Long modifiedAt) {
         this.modifiedAt = modifiedAt;
     }
 
@@ -186,7 +186,7 @@ public class LogEntry {
      *     The dateOfEntry
      */
     @JsonProperty("dateOfEntry")
-    public Integer getDateOfEntry() {
+    public Long getDateOfEntry() {
         return dateOfEntry;
     }
 
@@ -196,7 +196,7 @@ public class LogEntry {
      *     The dateOfEntry
      */
     @JsonProperty("dateOfEntry")
-    public void setDateOfEntry(Integer dateOfEntry) {
+    public void setDateOfEntry(Long dateOfEntry) {
         this.dateOfEntry = dateOfEntry;
     }
 
@@ -206,7 +206,7 @@ public class LogEntry {
      *     The dateOfEntryUtcOffset
      */
     @JsonProperty("dateOfEntryUtcOffset")
-    public Integer getDateOfEntryUtcOffset() {
+    public Long getDateOfEntryUtcOffset() {
         return dateOfEntryUtcOffset;
     }
 
@@ -216,7 +216,7 @@ public class LogEntry {
      *     The dateOfEntryUtcOffset
      */
     @JsonProperty("dateOfEntryUtcOffset")
-    public void setDateOfEntryUtcOffset(Integer dateOfEntryUtcOffset) {
+    public void setDateOfEntryUtcOffset(Long dateOfEntryUtcOffset) {
         this.dateOfEntryUtcOffset = dateOfEntryUtcOffset;
     }
 
@@ -226,7 +226,7 @@ public class LogEntry {
      *     The dateOfEntryUtcOffsetSeconds
      */
     @JsonProperty("dateOfEntryUtcOffsetSeconds")
-    public Integer getDateOfEntryUtcOffsetSeconds() {
+    public Long getDateOfEntryUtcOffsetSeconds() {
         return dateOfEntryUtcOffsetSeconds;
     }
 
@@ -236,7 +236,7 @@ public class LogEntry {
      *     The dateOfEntryUtcOffsetSeconds
      */
     @JsonProperty("dateOfEntryUtcOffsetSeconds")
-    public void setDateOfEntryUtcOffsetSeconds(Integer dateOfEntryUtcOffsetSeconds) {
+    public void setDateOfEntryUtcOffsetSeconds(Long dateOfEntryUtcOffsetSeconds) {
         this.dateOfEntryUtcOffsetSeconds = dateOfEntryUtcOffsetSeconds;
     }
 
@@ -246,7 +246,7 @@ public class LogEntry {
      *     The dateOfEntryLocal
      */
     @JsonProperty("dateOfEntryLocal")
-    public Integer getDateOfEntryLocal() {
+    public Long getDateOfEntryLocal() {
         return dateOfEntryLocal;
     }
 
@@ -256,7 +256,7 @@ public class LogEntry {
      *     The dateOfEntryLocal
      */
     @JsonProperty("dateOfEntryLocal")
-    public void setDateOfEntryLocal(Integer dateOfEntryLocal) {
+    public void setDateOfEntryLocal(Long dateOfEntryLocal) {
         this.dateOfEntryLocal = dateOfEntryLocal;
     }
 
@@ -291,7 +291,7 @@ public class LogEntry {
     }
 
     /**
-     * 
+     * Blood glucose measurement as MGDL
      * @param bloodGlucoseMeasurement
      *     The bloodGlucoseMeasurement
      */
