@@ -98,7 +98,7 @@ public class LogEntry {
 	@JsonIgnore
 	private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 	/**
-	 * Non-json property used for comparing easily with other objects
+	 * Non-json property used for comparing dateTime easily with other objects
 	 */
 	private DateTime dateTimeLocal;
 
@@ -242,7 +242,7 @@ public class LogEntry {
 	 * @return the local date time
 	 */
 	public DateTime getDateTimeLocal() {
-		return this.dateTimeLocal;
+		return this.dateTimeLocal.minus(this.dateOfEntryUtcOffsetSeconds);
 	}
 
 	/**

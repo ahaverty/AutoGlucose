@@ -75,11 +75,10 @@ public class CsvUtility {
 	public static List<Measurement> extractMeasurementsFromCsvData(List<CSVRecord> csvRecords) {
 		List<Measurement> measurements = new ArrayList<Measurement>();
 
+		//TODO make extraction more dynamic, possibly missing first few rows here
 		// Start on 3rd row
-		for (int i = 3; i < csvRecords.size(); i++) {
+		for (int i = 1; i < csvRecords.size(); i++) {
 			CSVRecord record = csvRecords.get(i);
-
-			logger.info(record.get(0));
 
 			Measurement measurement = new Measurement();
 

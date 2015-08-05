@@ -3,6 +3,8 @@
  */
 package com.ahaverty.autoglucose.data;
 
+import org.joda.time.Period;
+
 import com.ahaverty.autoglucose.rest.pojo.Log;
 import com.ahaverty.autoglucose.rest.pojo.LogEntry;
 
@@ -22,23 +24,32 @@ public class CompareUtility {
 	 */
 	public static boolean doesMeasurementExist(Measurement measurement, Log log) {
 
-		double differencePrecision = 0.5;	//TODO add to config file or static var class
+		double measurementDifferencePrecision = 0.5;	//TODO add to config file or static var class
+		int timeDifferencePrecision = 1;
 
 		boolean exists = false;
 
 		for (LogEntry logEntry : log.getLogEntry()) {
-
-			boolean timeMatches = measurement.getDateTime().equals(logEntry.getDateTimeLocal());
-			if (timeMatches) {
+			
+			if(logEntry.getBloodGlucoseMeasurement() != null){
+			
+				//TODO change to looser comparison due to live server using seconds
 				
-				//Convert negative values to positive for comparison checker
-				double measurementDifference =  Math.abs(measurement.getReadingMgdl() - logEntry.getBloodGlucoseMeasurement());
+				Period timeDifference = new Period(measurement.getDateTime(), logEntry.getDateTimeLocal());
 				
-				boolean readingMatches = measurementDifference < differencePrecision;
-				if (readingMatches) {
-					exists = true;
-					//Break out of the for loop if a match is found
-					break;
+				boolean timeMatches = timeDifference.getMinutes() < timeDifferencePrecision;
+				
+				if (timeMatches) {
+					
+					//Convert negative values to positive for comparison checker
+					double measurementDifference =  Math.abs(measurement.getReadingMgdl() - logEntry.getBloodGlucoseMeasurement());
+					
+					boolean readingMatches = measurementDifference < measurementDifferencePrecision;
+					if (readingMatches) {
+						exists = true;
+						//Break out of the for loop if a match is found
+						break;
+					}
 				}
 			}
 		}
