@@ -44,6 +44,7 @@ public class CompareMeasurementTest {
 		Log log = restService.getMeasurements();
 		
 		Log resizedLog = new Log();
+		
 		List<LogEntry> logEntries = new ArrayList<LogEntry>();
 		logEntries.add(log.getLogEntry().get(0));
 		logEntries.add(log.getLogEntry().get(1));
@@ -54,7 +55,7 @@ public class CompareMeasurementTest {
 		//List<Measurement> measurements = CsvUtility.extractMeasurementsFromCsvData(CsvUtility.readCsvFile(fileReader));
 		
 		for(Measurement measurement : measurements) {
-			boolean exists = CompareUtility.isMeasurementExist(measurement, log);
+			boolean exists = CompareUtility.doesMeasurementExist(measurement, resizedLog);
 			if(exists) {
 				logger.info("exists: " + exists);
 			}

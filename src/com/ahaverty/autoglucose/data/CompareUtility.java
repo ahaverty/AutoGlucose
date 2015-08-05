@@ -20,9 +20,9 @@ public class CompareUtility {
 	 * @param log
 	 * @return True if the time and measurement matches
 	 */
-	public static boolean isMeasurementExist(Measurement measurement, Log log) {
+	public static boolean doesMeasurementExist(Measurement measurement, Log log) {
 
-		double differencePrecision = 0.5;
+		double differencePrecision = 0.5;	//TODO add to config file or static var class
 
 		boolean exists = false;
 
@@ -31,12 +31,14 @@ public class CompareUtility {
 			boolean timeMatches = measurement.getDateTime().equals(logEntry.getDateTimeLocal());
 			if (timeMatches) {
 				
-				//Absolute negative values to positive for comparison checker
+				//Convert negative values to positive for comparison checker
 				double measurementDifference =  Math.abs(measurement.getReadingMgdl() - logEntry.getBloodGlucoseMeasurement());
 				
 				boolean readingMatches = measurementDifference < differencePrecision;
 				if (readingMatches) {
 					exists = true;
+					//Break out of the for loop if a match is found
+					break;
 				}
 			}
 		}
