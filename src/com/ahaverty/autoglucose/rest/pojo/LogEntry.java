@@ -175,6 +175,7 @@ public class LogEntry {
 	 */
 	@JsonProperty("dateOfEntry")
 	public void setDateOfEntry(Long dateOfEntry) {
+		this.dateTimeLocal = new DateTime(dateOfEntry * 1000L);
 		this.dateOfEntry = dateOfEntry;
 	}
 
@@ -232,7 +233,6 @@ public class LogEntry {
 	 */
 	@JsonProperty("dateOfEntryLocal")
 	public void setDateOfEntryLocal(Long dateOfEntryLocal) {
-		this.dateTimeLocal = new DateTime(dateOfEntryLocal * 1000L);
 		this.dateOfEntryLocal = dateOfEntryLocal;
 	}
 

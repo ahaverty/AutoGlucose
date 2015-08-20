@@ -69,14 +69,4 @@ public class TransformUtility {
 		return tag;
 	}
 
-	public static Measurement convertLogEntryToMeasurement(LogEntry logEntry) {
-		Measurement measurement = new Measurement();
-
-		// measurement.setDateTime(new
-		// DateTime(logEntry.getDateOfEntryLocal()));
-		// measurement.
-
-		return measurement;
-	}
-
 }

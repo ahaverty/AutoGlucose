@@ -20,10 +20,16 @@ public class DriveWatch {
 	final static long pollInterval = 1000; // TODO set in properties file
 	final static String reportFolderPath = "ACCU-CHEK Mobile\\Reports";
 
-	public static void main(String[] args) {
+	public static List<File> getCsvFilesOnceMeterConnects() {
+
+		boolean meterFound = false;
+		
+		List<File> csvFiles = new ArrayList<File>();
+
 		try {
+
 			List<Path> roots = asList(FileSystems.getDefault().getRootDirectories());
-			for (;;) {
+			while (meterFound == false) {
 				Thread.sleep(pollInterval);
 
 				List<Path> newRoots = asList(FileSystems.getDefault().getRootDirectories());
@@ -34,13 +40,13 @@ public class DriveWatch {
 					if (!roots.contains(newRoot)) {
 						// Do something when new route found in here
 						System.out.println("New drive detected: " + newRoot);
+						meterFound = true;
 
 						Path reportFolder = Paths.get(newRoot.toString(), reportFolderPath);
 
 						if (Files.isDirectory(reportFolder)) {
 							System.out.println("Found report folder");
-							// TODO trigger csv extractor here
-							findCsvFiles(reportFolder);
+							csvFiles = getCsvFiles(reportFolder);
 						} else {
 							System.out.println("Did not find report folder");
 						}
@@ -53,6 +59,7 @@ public class DriveWatch {
 			e.printStackTrace();
 			Thread.currentThread().interrupt();
 		}
+		return csvFiles;
 	}
 
 	private static <T> List<T> asList(Iterable<T> i) {
@@ -67,19 +74,20 @@ public class DriveWatch {
 		return l;
 	}
 
-	private static void findCsvFiles(Path path) {
+	private static List<File> getCsvFiles(Path path) {
+		List<File> listOfFiles = new ArrayList<File>();
+
 		File dir = path.toFile();
 
-		if (!dir.isDirectory())
+		if (!dir.isDirectory()) {
 			throw new IllegalStateException("Path is not a directory");
+		}
 
 		for (File file : dir.listFiles(new RegexFileFilter("@*\\.csv"))) {
-			processCsvFile(file);
+			listOfFiles.add(file);
 		}
-	}
-	
-	private static void processCsvFile(File file) {
-		System.out.println("CSV file: " + file.getAbsolutePath());
+
+		return listOfFiles;
 	}
 
 }

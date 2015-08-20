@@ -45,7 +45,6 @@ public class CsvUtility {
 			unit, temperatureWarning, outOfTargetRange, other, beforeMeal,
 			afterMeal, controlTest };
 
-	
 	public static List<CSVRecord> readCsvFile(Reader fileReader) {
 
 		CSVParser csvFileParser = null;
@@ -75,53 +74,61 @@ public class CsvUtility {
 	public static List<Measurement> extractMeasurementsFromCsvData(List<CSVRecord> csvRecords) {
 		List<Measurement> measurements = new ArrayList<Measurement>();
 
-		//TODO make extraction more dynamic, possibly missing first few rows here
-		// Start on 3rd row
-		for (int i = 1; i < csvRecords.size(); i++) {
-			CSVRecord record = csvRecords.get(i);
+		int headerQuantity = 3; // TODO separate into prop file
+		int ignoreLastRows = 1;
 
-			Measurement measurement = new Measurement();
+		if (csvRecords.size() > headerQuantity) {
+			for (CSVRecord record : csvRecords.subList(headerQuantity, csvRecords.size() - ignoreLastRows)) {
 
-			DateTimeFormat.forPattern("dd/MM/yyyy HH:mm:ss");
-			DateTime dateTime = extractDateTime(record.get(date), record.get(time));
+				Measurement measurement = new Measurement();
 
-			measurement.setDateTime(dateTime);
+				DateTime dateTime = extractDateTime(record.get(date), record.get(time));
+				
+				if (dateTime == null) {
+					logger.log(Level.WARNING, "Breaking from measurement extractor, due to datetime being null");
+					break;
+				}
 
-			double resultReading = Double.parseDouble(record.get(result));
+				measurement.setDateTime(dateTime);
 
-			// TODO add better error handling, possibly separate into new method
-			// to extract each csv record
-			if (record.get(unit).equalsIgnoreCase("mmol/l")) {
-				measurement.setUnit(Unit.MMOL);
-				measurement.setReadingMmol(resultReading);
-			} else {
-				measurement.setUnit(Unit.MGDL);
-				measurement.setReadingMgdl(resultReading);
+				double resultReading = Double.parseDouble(record.get(result));
+
+				// TODO add better error handling, possibly separate into new
+				// method
+				// to extract each csv record
+				if (record.get(unit).equalsIgnoreCase("mmol/l")) {
+					measurement.setUnit(Unit.MMOL);
+					measurement.setReadingMmol(resultReading);
+				} else {
+					measurement.setUnit(Unit.MGDL);
+					measurement.setReadingMgdl(resultReading);
+				}
+
+				if (record.get(beforeMeal).equalsIgnoreCase("x")) {
+					measurement.setReadingCategory(ReadingCategory.BEFORE_MEAL);
+				} else if (record.get(afterMeal).equalsIgnoreCase("x")) {
+					measurement.setReadingCategory(ReadingCategory.AFTER_MEAL);
+				} else if (record.get(controlTest).equalsIgnoreCase("x")) {
+					measurement.setReadingCategory(ReadingCategory.CONTROL_TEST);
+				}
+
+				if (record.get(outOfTargetRange).equalsIgnoreCase("x")) {
+					measurement.setOutOfTargetRange(true);
+				}
+
+				if (record.get(temperatureWarning).equalsIgnoreCase("x")) {
+					measurement.setTemperatureWarning(true);
+				}
+
+				if (record.get(other).equalsIgnoreCase("x")) {
+					measurement.setOther(true);
+				}
+
+				measurements.add(measurement);
+
 			}
-
-			if (record.get(beforeMeal).equalsIgnoreCase("x")) {
-				measurement.setReadingCategory(ReadingCategory.BEFORE_MEAL);
-			} else if (record.get(afterMeal).equalsIgnoreCase("x")) {
-				measurement.setReadingCategory(ReadingCategory.AFTER_MEAL);
-			} else if (record.get(controlTest).equalsIgnoreCase("x")) {
-				measurement.setReadingCategory(ReadingCategory.CONTROL_TEST);
-			}
-
-			if (record.get(outOfTargetRange).equalsIgnoreCase("x")) {
-				measurement.setOutOfTargetRange(true);
-			}
-
-			if (record.get(temperatureWarning).equalsIgnoreCase("x")) {
-				measurement.setTemperatureWarning(true);
-			}
-
-			if (record.get(other).equalsIgnoreCase("x")) {
-				measurement.setOther(true);
-			}
-
-			measurements.add(measurement);
 		}
-		
+
 		return measurements;
 	}
 
@@ -136,9 +143,15 @@ public class CsvUtility {
 	 *         provided
 	 */
 	private static DateTime extractDateTime(String date, String time) {
+		DateTime dateTime = null;
 		String dateTimeCombined = date + " " + time;
 		// TODO add better error handling for converting to a date from string
 		DateTimeFormatter dateTimeFormatter = DateTimeFormat.forPattern("dd.MM.yyyy HH:mm");
-		return dateTimeFormatter.parseDateTime(dateTimeCombined);
+		try {
+			dateTime = dateTimeFormatter.parseDateTime(dateTimeCombined);
+		} catch (IllegalArgumentException e) {
+			logger.log(Level.WARNING, "Invalid date time format found.");
+		}
+		return dateTime;
 	}
 }
