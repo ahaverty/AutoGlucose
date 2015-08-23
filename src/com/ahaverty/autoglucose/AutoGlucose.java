@@ -76,7 +76,7 @@ public class AutoGlucose {
 			}
 		}
 		
-		if(newMeasurementsCount > 0){
+		if(newMeasurementsCount < 1){
 			logger.log(Level.INFO, "No new measurements were POSTed.");
 		} else {
 			logger.log(Level.INFO, newMeasurementsCount + " new measurements were POSTed.");
