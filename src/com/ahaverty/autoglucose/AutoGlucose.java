@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import com.ahaverty.autoglucose.config.AppProperties;
 import com.ahaverty.autoglucose.data.CompareUtility;
 import com.ahaverty.autoglucose.data.Measurement;
 import com.ahaverty.autoglucose.file.CsvUtility;
@@ -29,38 +30,56 @@ public class AutoGlucose {
 	 * @param args
 	 */
 	public static void main(String[] args) {
+		
+		logger.log(Level.INFO, "Starting AutoGlucose.");
 
-		while(true) {
+		while (true) {
 			List<File> csvFiles = DriveWatch.getCsvFilesOnceMeterConnects();
-			
-			for(File file : csvFiles){
+
+			for (File file : csvFiles) {
 				compareAndSend(file);
 			}
 		}
-		
+
 	}
-	
+
 	private static void compareAndSend(File file) {
+		int newMeasurementsCount = 0;
+		AppProperties prop = new AppProperties();
+		String baseUri = prop.getBaseUri();
+
 		RestUtility restUtility = new RestUtility();
-		Log log = restUtility.getMeasurements();
-		
+
 		List<Measurement> measurements = null;
-		
+
 		try {
 			measurements = CsvUtility.extractMeasurementsFromCsvData(CsvUtility.readCsvFile(new FileReader(file)));
 		} catch (FileNotFoundException e) {
-			logger.log(Level.SEVERE, "File was not found: " + file.getAbsolutePath());
+			logger.log(Level.SEVERE, "File was not found: "
+					+ file.getAbsolutePath());
 		}
-		
-		for(Measurement measurement : measurements) {
+
+		// Wait until connection appears
+		while (restUtility.verifyConnection(baseUri) == false) {
+			logger.log(Level.WARNING, "Waiting for connection to compare and post measurements");
+		}
+
+		Log log = restUtility.getMeasurements();
+
+		for (Measurement measurement : measurements) {
 			boolean exists = CompareUtility.doesMeasurementExist(measurement, log);
-			
-			if(exists == false) {
+
+			if (exists == false) {
 				restUtility.putMeasurement(measurement, 3600, null, 4);
 				logger.info("PUT Measurement: " + measurement.toString());
+				newMeasurementsCount++;
 			}
-			
-			//logger.info("exists: " + exists + "meas: " + measurement.toString());
+		}
+		
+		if(newMeasurementsCount > 0){
+			logger.log(Level.INFO, "No new measurements were POSTed.");
+		} else {
+			logger.log(Level.INFO, newMeasurementsCount + " new measurements were POSTed.");
 		}
 	}
 

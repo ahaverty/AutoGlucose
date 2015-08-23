@@ -5,6 +5,7 @@ package com.ahaverty.autoglucose.data;
 
 import org.joda.time.Minutes;
 
+import com.ahaverty.autoglucose.config.AppProperties;
 import com.ahaverty.autoglucose.rest.pojo.Log;
 import com.ahaverty.autoglucose.rest.pojo.LogEntry;
 
@@ -23,9 +24,10 @@ public class CompareUtility {
 	 * @return True if the time and measurement matches
 	 */
 	public static boolean doesMeasurementExist(Measurement measurement, Log log) {
+		AppProperties prop = new AppProperties();
 
-		double measurementDifferencePrecision = 0.5;	//TODO add to config file or static var class
-		int timeDifferencePrecisionInMinutes = 15;
+		double measurementDifferencePrecision = prop.getMeasurementPrecision();
+		double timeDifferencePrecisionInMinutes = prop.getTimePrecision();
 
 		boolean exists = false;
 
@@ -33,7 +35,6 @@ public class CompareUtility {
 			
 			if(logEntry.getBloodGlucoseMeasurement() != null){
 			
-				//TODO change to looser comparison due to live server using seconds
 				int minutesBetween = Minutes.minutesBetween(measurement.getDateTime(), logEntry.getDateTimeLocal()).getMinutes();
 				boolean timeMatches = Math.abs(minutesBetween) < timeDifferencePrecisionInMinutes;
 				

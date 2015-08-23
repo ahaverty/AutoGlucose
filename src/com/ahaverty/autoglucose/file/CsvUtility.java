@@ -17,6 +17,7 @@ import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
+import com.ahaverty.autoglucose.config.AppProperties;
 import com.ahaverty.autoglucose.data.Measurement;
 import com.ahaverty.autoglucose.data.Measurement.ReadingCategory;
 import com.ahaverty.autoglucose.data.Measurement.Unit;
@@ -74,16 +75,19 @@ public class CsvUtility {
 	public static List<Measurement> extractMeasurementsFromCsvData(List<CSVRecord> csvRecords) {
 		List<Measurement> measurements = new ArrayList<Measurement>();
 
-		int headerQuantity = 3; // TODO separate into prop file
-		int ignoreLastRows = 1;
+		AppProperties prop = new AppProperties();
+
+		int headerQuantity = prop.getIgnoreTopRows();
+		int ignoreLastRows = prop.getIgnoreBottomRows();
 
 		if (csvRecords.size() > headerQuantity) {
-			for (CSVRecord record : csvRecords.subList(headerQuantity, csvRecords.size() - ignoreLastRows)) {
+			for (CSVRecord record : csvRecords.subList(headerQuantity, csvRecords.size()
+					- ignoreLastRows)) {
 
 				Measurement measurement = new Measurement();
 
 				DateTime dateTime = extractDateTime(record.get(date), record.get(time));
-				
+
 				if (dateTime == null) {
 					logger.log(Level.WARNING, "Breaking from measurement extractor, due to datetime being null");
 					break;
@@ -94,8 +98,7 @@ public class CsvUtility {
 				double resultReading = Double.parseDouble(record.get(result));
 
 				// TODO add better error handling, possibly separate into new
-				// method
-				// to extract each csv record
+				// method to extract each csv record
 				if (record.get(unit).equalsIgnoreCase("mmol/l")) {
 					measurement.setUnit(Unit.MMOL);
 					measurement.setReadingMmol(resultReading);

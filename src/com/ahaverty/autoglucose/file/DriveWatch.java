@@ -11,14 +11,18 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ahaverty.autoglucose.config.AppProperties;
+
 /**
  * @author Alan Haverty
  *
  */
 public class DriveWatch {
+	
+	static AppProperties prop = new AppProperties();
 
-	final static long pollInterval = 1000; // TODO set in properties file
-	final static String reportFolderPath = "ACCU-CHEK Mobile\\Reports";
+	final static long pollInterval = prop.getPollInterval();
+	final static String reportFolderPath = prop.getFolderToMonitor();
 
 	public static List<File> getCsvFilesOnceMeterConnects() {
 

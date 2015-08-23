@@ -35,8 +35,7 @@ public class Measurement {
 		}
 	};
 
-	// Date;Time;Result;Unit;Temperature warning;Out of target
-	// range;Other;Before meal;After meal;Control test
+
 	private DateTime dateTime;
 	private double readingMgdl;
 	private Unit unit;

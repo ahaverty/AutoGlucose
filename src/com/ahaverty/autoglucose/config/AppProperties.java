@@ -14,10 +14,17 @@ import java.util.Properties;
  */
 public class AppProperties {
 
+	//TODO add error handling and defaults to properties class
 	private String baseUri;
 	private String logEntriesUri;
 	private String username;
 	private String password;
+	private String folderToMonitor;
+	private String pollInterval;
+	private String ignoreTopRows;
+	private String ignoreBottomRows;
+	private String measurementPrecision;
+	private String timePrecision;
 
 	public AppProperties() {
 
@@ -38,6 +45,12 @@ public class AppProperties {
 			this.logEntriesUri = prop.getProperty("logEntriesUri");
 			this.username = prop.getProperty("username");
 			this.password = prop.getProperty("password");
+			this.folderToMonitor = prop.getProperty("folderToMonitor");
+			this.pollInterval = prop.getProperty("pollInterval");
+			this.ignoreTopRows = prop.getProperty("ignoreTopRows");
+			this.ignoreBottomRows = prop.getProperty("ignoreBottomRows");
+			this.measurementPrecision = prop.getProperty("measurementPrecision");
+			this.timePrecision = prop.getProperty("timePrecision");
 
 		} catch (IOException ex) {
 			ex.printStackTrace();
@@ -58,6 +71,30 @@ public class AppProperties {
 
 	public String getPassword() {
 		return password;
+	}
+
+	public String getFolderToMonitor() {
+		return folderToMonitor;
+	}
+
+	public long getPollInterval() {
+		return Long.parseLong(pollInterval);
+	}
+
+	public int getIgnoreTopRows() {
+		return Integer.parseInt(ignoreTopRows);
+	}
+
+	public int getIgnoreBottomRows() {
+		return Integer.parseInt(ignoreBottomRows);
+	}
+
+	public double getMeasurementPrecision() {
+		return Double.parseDouble(measurementPrecision);
+	}
+
+	public double getTimePrecision() {
+		return Double.parseDouble(timePrecision);
 	}
 
 }
