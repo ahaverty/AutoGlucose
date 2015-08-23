@@ -37,7 +37,7 @@ public class PutMeasurementTest {
 //		int points = 2;
 		
 		
-//		RestService restService = new RestService();
+//		RestUtility restService = new RestUtility();
 //		Log log = restService.getMeasurements();
 //		logger.log(Level.INFO, log.toString());
 //		

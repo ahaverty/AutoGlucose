@@ -12,7 +12,7 @@ import java.util.logging.Logger;
 import com.ahaverty.autoglucose.data.CompareUtility;
 import com.ahaverty.autoglucose.data.Measurement;
 import com.ahaverty.autoglucose.file.CsvUtility;
-import com.ahaverty.autoglucose.rest.RestService;
+import com.ahaverty.autoglucose.rest.RestUtility;
 import com.ahaverty.autoglucose.rest.pojo.Log;
 
 /**
@@ -36,8 +36,8 @@ public class CompareLiveMeasurementTest {
 		}
 		
 		
-		RestService restService = new RestService();
-		Log log = restService.getMeasurements();
+		RestUtility restUtility = new RestUtility();
+		Log log = restUtility.getMeasurements();
 		
 		List<Measurement> measurements = CsvUtility.extractMeasurementsFromCsvData(CsvUtility.readCsvFile(fileReader));
 		

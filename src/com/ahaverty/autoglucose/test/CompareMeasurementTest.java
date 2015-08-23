@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
 
 import com.ahaverty.autoglucose.data.CompareUtility;
 import com.ahaverty.autoglucose.data.Measurement;
-import com.ahaverty.autoglucose.rest.RestService;
+import com.ahaverty.autoglucose.rest.RestUtility;
 import com.ahaverty.autoglucose.rest.pojo.Log;
 import com.ahaverty.autoglucose.rest.pojo.LogEntry;
 
@@ -32,8 +32,8 @@ public class CompareMeasurementTest {
 		List<Measurement> measurements = new ArrayList<Measurement>();
 		measurements.add(testMeasurement);
 		
-		RestService restService = new RestService();
-		Log log = restService.getMeasurements();
+		RestUtility restUtility = new RestUtility();
+		Log log = restUtility.getMeasurements();
 		
 		Log resizedLog = new Log();
 		

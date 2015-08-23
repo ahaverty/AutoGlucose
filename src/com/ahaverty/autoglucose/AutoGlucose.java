@@ -14,7 +14,7 @@ import com.ahaverty.autoglucose.data.CompareUtility;
 import com.ahaverty.autoglucose.data.Measurement;
 import com.ahaverty.autoglucose.file.CsvUtility;
 import com.ahaverty.autoglucose.file.DriveWatch;
-import com.ahaverty.autoglucose.rest.RestService;
+import com.ahaverty.autoglucose.rest.RestUtility;
 import com.ahaverty.autoglucose.rest.pojo.Log;
 
 /**
@@ -41,8 +41,8 @@ public class AutoGlucose {
 	}
 	
 	private static void compareAndSend(File file) {
-		RestService restService = new RestService();
-		Log log = restService.getMeasurements();
+		RestUtility restUtility = new RestUtility();
+		Log log = restUtility.getMeasurements();
 		
 		List<Measurement> measurements = null;
 		
@@ -56,7 +56,7 @@ public class AutoGlucose {
 			boolean exists = CompareUtility.doesMeasurementExist(measurement, log);
 			
 			if(exists == false) {
-				restService.putMeasurement(measurement, 3600, null, 4);
+				restUtility.putMeasurement(measurement, 3600, null, 4);
 				logger.info("PUT Measurement: " + measurement.toString());
 			}
 			
