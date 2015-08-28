@@ -14,7 +14,7 @@ import com.ahaverty.autoglucose.config.AppProperties;
 import com.ahaverty.autoglucose.data.CompareUtility;
 import com.ahaverty.autoglucose.data.Measurement;
 import com.ahaverty.autoglucose.file.CsvUtility;
-import com.ahaverty.autoglucose.file.DriveWatch;
+import com.ahaverty.autoglucose.file.DriveWatchUnix;
 import com.ahaverty.autoglucose.rest.RestUtility;
 import com.ahaverty.autoglucose.rest.pojo.Log;
 
@@ -31,10 +31,10 @@ public class AutoGlucose {
 	 */
 	public static void main(String[] args) {
 		
-		logger.log(Level.INFO, "Starting AutoGlucose.");
+		logger.info("Starting AutoGlucose.");
 
 		while (true) {
-			List<File> csvFiles = DriveWatch.getCsvFilesOnceMeterConnects();
+			List<File> csvFiles = DriveWatchUnix.getCsvFilesOnceMeterConnects();
 
 			for (File file : csvFiles) {
 				compareAndSend(file);
@@ -77,9 +77,9 @@ public class AutoGlucose {
 		}
 		
 		if(newMeasurementsCount < 1){
-			logger.log(Level.INFO, "No new measurements were POSTed.");
+			logger.info("No new measurements were POSTed.");
 		} else {
-			logger.log(Level.INFO, newMeasurementsCount + " new measurements were POSTed.");
+			logger.info(newMeasurementsCount + " new measurements were POSTed.");
 		}
 	}
 
