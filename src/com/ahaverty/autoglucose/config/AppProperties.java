@@ -31,7 +31,7 @@ public class AppProperties {
 		Properties prop = new Properties();
 
 		try {
-			InputStream input = this.getClass().getResourceAsStream("../config.properties");
+			InputStream input = this.getClass().getResourceAsStream("/config.properties");
 
 			if (input == null) {
 				throw new RuntimeException("Unable to find config.properties file");
