@@ -10,6 +10,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.ahaverty.autoglucose.config.AppProperties;
 
@@ -18,6 +19,8 @@ import com.ahaverty.autoglucose.config.AppProperties;
  *
  */
 public class DriveWatch {
+	
+	private static Logger logger = Logger.getLogger("DriveWatch");
 	
 	static AppProperties prop = new AppProperties();
 
@@ -43,16 +46,16 @@ public class DriveWatch {
 					// previous polled roots
 					if (!roots.contains(newRoot)) {
 						// Do something when new route found in here
-						System.out.println("New drive detected: " + newRoot);
+						logger.info("New drive detected: " + newRoot);
 						meterFound = true;
 
 						Path reportFolder = Paths.get(newRoot.toString(), reportFolderPath);
 
 						if (Files.isDirectory(reportFolder)) {
-							System.out.println("Found report folder");
+							logger.info("Found report folder");
 							csvFiles = getCsvFiles(reportFolder);
 						} else {
-							System.out.println("Did not find report folder");
+							logger.info("Did not find report folder");
 						}
 
 					}

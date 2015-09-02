@@ -9,6 +9,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 import com.ahaverty.autoglucose.config.AppProperties;
 
@@ -17,6 +18,8 @@ import com.ahaverty.autoglucose.config.AppProperties;
  *
  */
 public class DriveWatchUnix {
+	
+	private static Logger logger = Logger.getLogger("DriveWatchUnix");
 	
 	static AppProperties prop = new AppProperties();
 
@@ -37,7 +40,7 @@ public class DriveWatchUnix {
 
 				if (Files.isDirectory(reportFolder)) {
 					meterFound = true;
-					System.out.println("Found report folder");
+					logger.info("Found report folder");
 					csvFiles = getCsvFiles(reportFolder);
 				}
 			}

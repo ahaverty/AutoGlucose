@@ -65,12 +65,12 @@ public class PutMeasurementTest {
 //		RequestCreator requestCreator = new RequestCreator();
 
 //		JSONObject putMeasurementPayload = requestCreator.measurementReading(id, currentDateTime, utcOffset, location, convertMmolToMgdl(glucoseMeasurement), points);
-//		System.out.println(putMeasurementPayload);
+//		logger.log(putMeasurementPayload);
 
 //		RestSender sender = new RestSender();
 //		int returnCode = sender.sendReading(id, putMeasurementPayload);
 
-//		System.out.println("Return Code: " + returnCode);
+//		logger.log("Return Code: " + returnCode);
 	}
 
 }
