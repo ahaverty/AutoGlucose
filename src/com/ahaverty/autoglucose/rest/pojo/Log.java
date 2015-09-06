@@ -1,11 +1,14 @@
 
 package com.ahaverty.autoglucose.rest.pojo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.annotation.Generated;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -21,9 +24,13 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
 @JsonPropertyOrder({
     "logEntry"
 })
-public class Log {
+public class Log implements Serializable {
 
-    @JsonProperty("logEntry")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -3699742671919249722L;
+	@JsonProperty("logEntry")
     private List<LogEntry> logEntry = new ArrayList<LogEntry>();
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();

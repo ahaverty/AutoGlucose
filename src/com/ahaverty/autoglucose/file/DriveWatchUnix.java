@@ -36,7 +36,7 @@ public class DriveWatchUnix {
 			Path reportFolder = Paths.get(reportFolderPath);
 
 			while (meterFound == false) {
-				Thread.sleep(pollInterval);	
+				Thread.sleep(pollInterval);
 
 				if (Files.isDirectory(reportFolder)) {
 					meterFound = true;

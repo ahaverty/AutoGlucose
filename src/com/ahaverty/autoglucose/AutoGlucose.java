@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import com.ahaverty.autoglucose.config.AppProperties;
 import com.ahaverty.autoglucose.data.CompareUtility;
 import com.ahaverty.autoglucose.data.Measurement;
+import com.ahaverty.autoglucose.file.BackupUtility;
 import com.ahaverty.autoglucose.file.CsvUtility;
 import com.ahaverty.autoglucose.file.DriveWatchUnix;
 import com.ahaverty.autoglucose.rest.RestUtility;
@@ -30,20 +31,32 @@ public class AutoGlucose {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		
 		logger.info("Starting AutoGlucose.");
-
+		
+		Long fileLastModified = (long) -1;
+		
 		while (true) {
 			List<File> csvFiles = DriveWatchUnix.getCsvFilesOnceMeterConnects();
 
-			for (File file : csvFiles) {
-				compareAndSend(file);
+			if(csvFiles.size() != 1) {
+				logger.log(Level.WARNING, "Expecting just 1 csv file, found " + csvFiles.size() + " csv files instead.");
 			}
+			
+			File firstCsvFile = csvFiles.get(0);
+			
+			if(firstCsvFile.lastModified() != fileLastModified) {
+				logger.info("New CSV file found, modified at: " + firstCsvFile.lastModified());
+				fileLastModified = firstCsvFile.lastModified();
+				compareAndSend(firstCsvFile);
+			}
+			
 		}
 
 	}
 
 	private static void compareAndSend(File file) {
+
+		BackupUtility backupUtility = new BackupUtility();
 		int newMeasurementsCount = 0;
 		AppProperties prop = new AppProperties();
 		String baseUri = prop.getBaseUri();
@@ -54,6 +67,7 @@ public class AutoGlucose {
 
 		try {
 			measurements = CsvUtility.extractMeasurementsFromCsvData(CsvUtility.readCsvFile(new FileReader(file)));
+			
 		} catch (FileNotFoundException e) {
 			logger.log(Level.SEVERE, "File was not found: "
 					+ file.getAbsolutePath());
@@ -65,21 +79,31 @@ public class AutoGlucose {
 		}
 
 		Log log = restUtility.getMeasurements();
-
-		for (Measurement measurement : measurements) {
-			boolean exists = CompareUtility.doesMeasurementExist(measurement, log);
-
-			if (exists == false) {
-				restUtility.putMeasurement(measurement, 3600, null, 4);
-				logger.info("PUT Measurement: " + measurement.toString());
-				newMeasurementsCount++;
-			}
-		}
 		
-		if(newMeasurementsCount < 1){
-			logger.info("No new measurements were POSTed.");
+		//Backup everything before doing any work!
+		backupUtility.backupLogToFile(log);
+		backupUtility.backupMeasurementsToFile(measurements);
+		
+		//Ensure the GET worked before comparing local to no readings
+		if(log.getLogEntry().size() > 0) {
+
+			for (Measurement measurement : measurements) {
+				boolean exists = CompareUtility.doesMeasurementExist(measurement, log);
+	
+				if (exists == false) {
+					restUtility.putMeasurement(measurement, 3600, null, 4);
+					logger.info("PUT Measurement: " + measurement.toString());
+					newMeasurementsCount++;
+				}
+			}
+			
+			if(newMeasurementsCount < 1){
+				logger.info("No new measurements were POSTed.");
+			} else {
+				logger.info(newMeasurementsCount + " new measurements were POSTed.");
+			}
 		} else {
-			logger.info(newMeasurementsCount + " new measurements were POSTed.");
+			logger.info("Failed to GET measurements from server.");
 		}
 	}
 

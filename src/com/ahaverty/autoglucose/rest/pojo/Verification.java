@@ -1,9 +1,12 @@
 
 package com.ahaverty.autoglucose.rest.pojo;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.annotation.Generated;
+
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -25,9 +28,10 @@ import org.codehaus.jackson.map.annotate.JsonSerialize;
     "sourceId",
     "recordReference"
 })
-public class Verification {
+public class Verification implements Serializable {
 
-    @JsonProperty("date")
+	private static final long serialVersionUID = 6440837728390037934L;
+	@JsonProperty("date")
     private Integer date;
     @JsonProperty("logEntryAttribute")
     private String logEntryAttribute;

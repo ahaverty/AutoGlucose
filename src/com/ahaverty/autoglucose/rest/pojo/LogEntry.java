@@ -1,5 +1,6 @@
 package com.ahaverty.autoglucose.rest.pojo;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,8 +32,9 @@ import org.joda.time.DateTime;
 		"bolusFoodInsulinUnits", "locationType", "locationLatitude",
 		"locationLongitude", "bolusCorrectionInsulinUnits", "verifications",
 		"mealImages" })
-public class LogEntry {
+public class LogEntry implements Serializable {
 
+	private static final long serialVersionUID = -2418543409647179772L;
 	@JsonProperty("id")
 	private String id;
 	@JsonProperty("tags")

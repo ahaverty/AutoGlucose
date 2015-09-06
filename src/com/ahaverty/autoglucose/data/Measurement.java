@@ -3,6 +3,8 @@
  */
 package com.ahaverty.autoglucose.data;
 
+import java.io.Serializable;
+
 import org.joda.time.DateTime;
 
 /**
@@ -10,8 +12,12 @@ import org.joda.time.DateTime;
  * @author Alan Haverty
  *
  */
-public class Measurement {
+public class Measurement implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6149342860838817653L;
 	final private int unitDifference = 18;
 
 	public enum ReadingCategory {
