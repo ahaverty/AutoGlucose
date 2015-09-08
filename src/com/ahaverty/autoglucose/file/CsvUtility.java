@@ -3,7 +3,12 @@
  */
 package com.ahaverty.autoglucose.file;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +50,38 @@ public class CsvUtility {
 	private static final String[] FILE_HEADER_MAPPING = { date, time, result,
 			unit, temperatureWarning, outOfTargetRange, other, beforeMeal,
 			afterMeal, controlTest };
+
+	/**
+	 * Count the number of lines in a file
+	 * 
+	 * @param filename
+	 * @return
+	 * @throws IOException
+	 */
+	public static int countLines(File file) throws IOException {
+		InputStream is = new BufferedInputStream(new FileInputStream(file));
+		byte[] c = new byte[1024];
+		int count = 0;
+		int readChars = 0;
+		boolean empty = true;
+
+		try {
+			while ((readChars = is.read(c)) != -1) {
+				empty = false;
+				for (int i = 0; i < readChars; ++i) {
+					if (c[i] == '\n') {
+						++count;
+					}
+				}
+			}
+		} catch (FileNotFoundException e) {
+			logger.log(Level.SEVERE, "File was not found while counting lines.");
+		} finally {
+			is.close();
+		}
+
+		return (count == 0 && !empty) ? 1 : count;
+	}
 
 	public static List<CSVRecord> readCsvFile(Reader fileReader) {
 

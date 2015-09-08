@@ -19,6 +19,7 @@ import com.ahaverty.autoglucose.config.AppProperties;
  */
 public class DriveWatchUnix {
 	
+	@SuppressWarnings("unused")
 	private static Logger logger = Logger.getLogger("DriveWatchUnix");
 	
 	static AppProperties prop = new AppProperties();
@@ -40,7 +41,8 @@ public class DriveWatchUnix {
 
 				if (Files.isDirectory(reportFolder)) {
 					meterFound = true;
-					logger.info("Found report folder");
+					//Disabling logger due to too much activity
+					//logger.info("Found report folder");
 					csvFiles = getCsvFiles(reportFolder);
 				}
 			}

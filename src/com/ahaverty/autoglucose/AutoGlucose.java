@@ -6,6 +6,7 @@ package com.ahaverty.autoglucose;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,7 +34,7 @@ public class AutoGlucose {
 	public static void main(String[] args) {
 		logger.info("Starting AutoGlucose.");
 		
-		Long fileLastModified = (long) -1;
+		int fileLastLines = -1;
 		
 		while (true) {
 			List<File> csvFiles = DriveWatchUnix.getCsvFilesOnceMeterConnects();
@@ -44,9 +45,18 @@ public class AutoGlucose {
 			
 			File firstCsvFile = csvFiles.get(0);
 			
-			if(firstCsvFile.lastModified() != fileLastModified) {
-				logger.info("New CSV file found, modified at: " + firstCsvFile.lastModified());
-				fileLastModified = firstCsvFile.lastModified();
+			int fileLines = 0;
+			try {
+				fileLines = CsvUtility.countLines(firstCsvFile);
+			} catch (IOException e) {
+				logger.log(Level.SEVERE, "Failed to count lines in the csv file.");
+			}
+			
+			if(fileLastLines != fileLines) {
+				logger.info("New CSV file found, with length: " + fileLines + " lines.");
+
+				fileLastLines = fileLines;
+				
 				compareAndSend(firstCsvFile);
 			}
 			
@@ -71,6 +81,7 @@ public class AutoGlucose {
 		} catch (FileNotFoundException e) {
 			logger.log(Level.SEVERE, "File was not found: "
 					+ file.getAbsolutePath());
+			return;
 		}
 
 		// Wait until connection appears
@@ -100,7 +111,7 @@ public class AutoGlucose {
 			if(newMeasurementsCount < 1){
 				logger.info("No new measurements were POSTed.");
 			} else {
-				logger.info(newMeasurementsCount + " new measurements were POSTed.");
+				logger.info(newMeasurementsCount + " new measurements were POSTed.\n\n");
 			}
 		} else {
 			logger.info("Failed to GET measurements from server.");

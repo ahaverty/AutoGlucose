@@ -94,6 +94,20 @@ public class RestService {
 		return isResponseSuccess(response);
 	}
 	
+	public void deleteMeasurement(String id) {
+		String apiDelete = baseUri + logEntriesUri + id;
+
+		logger.info("API URI: " + apiDelete);
+
+		WebResource webResource = client.resource(apiDelete);
+
+		try {
+			webResource.accept(MediaType.APPLICATION_JSON_TYPE).type(MediaType.APPLICATION_JSON_TYPE).delete(ClientResponse.class);
+		} catch (UniformInterfaceException | ClientHandlerException e) {
+			logger.log(Level.SEVERE, "Failed after accept");
+		}
+	}
+	
 	
 	public Log getLogEntry() {
 		

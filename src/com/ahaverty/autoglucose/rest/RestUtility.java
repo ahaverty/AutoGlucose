@@ -12,6 +12,7 @@ import org.json.simple.JSONObject;
 
 import com.ahaverty.autoglucose.data.Measurement;
 import com.ahaverty.autoglucose.rest.pojo.Log;
+import com.ahaverty.autoglucose.rest.pojo.LogEntry;
 
 /**
  * @author Alan Haverty
@@ -35,6 +36,10 @@ public class RestUtility {
 
 	public Log getMeasurements() {
 		return restService.getLogEntry();
+	}
+	
+	public void deleteMeasurement(LogEntry logEntry) {
+		restService.deleteMeasurement(logEntry.getId());
 	}
 
 	/**
